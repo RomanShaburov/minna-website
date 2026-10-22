@@ -24,6 +24,7 @@
     refShow: load("refShow", { reading: true, translation: true }),
     onlyMarked: load("onlyMarked", false),
     marks: load("marks", {}), // { "1": ["私|わたし", ...] } — отмеченные слова по урокам
+    done: load("done", {}), // { "3": true } — уроки, отмеченные как пройденные
     theme: load("theme", "auto"),
     searchScope: load("searchScope", "all"),
     found: null // { lesson, kind: "word" | "ref", i } — строка, на которую перешли из поиска
@@ -53,8 +54,9 @@
       var cls = "lesson-btn";
       if (i === state.lesson) cls += " is-active";
       if (!words.length) cls += " is-empty";
+      if (state.done[i]) cls += " is-done";
       html += '<button class="' + cls + '" data-lesson="' + i + '" title="Урок ' + i +
-        (words.length ? " — слов: " + words.length : " — пусто") + '">' + i + "</button>";
+        (words.length ? " — слов: " + words.length : " — пусто") + (state.done[i] ? ", пройден" : "") + '">' + i + "</button>";
     }
     $("lesson-nav").innerHTML = html;
   }
@@ -245,11 +247,21 @@
     $("tab-exercises").hidden = state.tab !== "exercises";
   }
 
+  function applyDone() {
+    var on = !!state.done[state.lesson];
+    var btn = $("done-btn");
+    btn.classList.toggle("is-done", on);
+    btn.setAttribute("aria-pressed", on);
+    btn.textContent = "Урок пройден";
+    btn.title = on ? "Снять отметку «пройден»" : "Отметить урок как пройденный";
+  }
+
   function renderLesson() {
     var lesson = getLesson(state.lesson);
     $("lesson-title").textContent = "Урок " + state.lesson + (lesson.title ? " · " + lesson.title : "");
     document.title = "Урок " + state.lesson + " — Minna no Nihongo";
     renderNav();
+    applyDone();
     renderWords();
     renderGrammar();
     renderExercises();
@@ -266,6 +278,13 @@
     trainerOn = false;
     showSearch(false);
     window.scrollTo(0, 0);
+  });
+
+  $("done-btn").addEventListener("click", function () {
+    if (state.done[state.lesson]) delete state.done[state.lesson]; else state.done[state.lesson] = true;
+    save("done", state.done);
+    applyDone();
+    renderNav();
   });
 
   document.querySelector(".tabs").addEventListener("click", function (e) {
