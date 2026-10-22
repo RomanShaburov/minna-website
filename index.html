@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Minna no Nihongo — слова</title>
+  <link rel="stylesheet" href="style.css">
+  <script>
+    // Тема применяется до отрисовки, чтобы при обновлении страницы не мигал прежний цвет
+    try {
+      var t = JSON.parse(localStorage.getItem("mnn.theme"));
+      if (t && t !== "auto") document.documentElement.setAttribute("data-theme", t);
+    } catch (e) {}
+  </script>
+</head>
+<body>
+  <header class="header">
+    <div class="top-row">
+      <h1 class="logo">みんなの日本語 <span>уроки 1–25</span></h1>
+      <div class="search-box">
+        <input type="search" id="search-input" placeholder="Поиск: слово, чтение или перевод" autocomplete="off" aria-label="Поиск слов">
+        <div class="suggest" id="suggest" role="listbox" hidden></div>
+        <select id="search-scope" aria-label="Где искать">
+          <option value="all">Все уроки</option>
+          <option value="lesson">Только этот урок</option>
+        </select>
+      </div>
+      <button class="nav-btn" id="trainer-btn" title="Тренажёр по отмеченным словам">Тренажёр</button>
+      <label class="theme-pick">Тема
+        <select id="theme-select" aria-label="Цветовая тема">
+          <option value="auto">Как в системе</option>
+          <option value="light">Светлая</option>
+          <option value="dark">Тёмная</option>
+          <option value="sakura">Сакура</option>
+          <option value="matcha">Матча</option>
+          <option value="ocean">Океан</option>
+          <option value="sepia">Сепия</option>
+          <option value="space">Космос</option>
+        </select>
+      </label>
+    </div>
+    <nav class="lessons" id="lesson-nav" aria-label="Уроки"></nav>
+    <!-- Заголовок урока и вкладки — внутри шапки, чтобы оставались на экране при прокрутке -->
+    <div class="lesson-head">
+      <h2 id="lesson-title">Урок 1</h2>
+      <div class="tabs" role="tablist">
+        <button class="tab" role="tab" data-tab="words">Слова</button>
+        <button class="tab" role="tab" data-tab="grammar">Грамматика</button>
+        <button class="tab" role="tab" data-tab="exercises">Упражнения</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="main">
+
+    <section id="search-results" class="search-results" hidden>
+      <div class="sr-head">
+        <span id="sr-count"></span>
+        <button class="nav-btn" id="sr-close">Закрыть поиск</button>
+      </div>
+      <div id="sr-list"></div>
+    </section>
+
+    <section id="trainer-view" class="trainer" hidden>
+      <div id="tr-setup">
+        <h2 class="tr-title">Тренажёр по отмеченным словам</h2>
+        <p class="tr-sub">Слова отмечаются кликом по номеру или слову в таблице урока. Выберите уроки, из которых брать слова.</p>
+        <div class="tr-lessons" id="tr-lessons"></div>
+        <div class="tr-row">
+          <button class="nav-btn" id="tr-all">Выбрать все</button>
+          <button class="nav-btn" id="tr-none">Снять выбор</button>
+        </div>
+        <div class="tr-opts">
+          <div class="tr-group">
+            <div class="tr-label">Режим</div>
+            <label><input type="radio" name="tr-mode" value="cards"> Карточки (проверяю себя сам)</label>
+            <label><input type="radio" name="tr-mode" value="typing"> Ввод слова (вижу перевод, пишу слово)</label>
+          </div>
+          <div class="tr-group" id="tr-dir-group">
+            <div class="tr-label">В карточках показывать</div>
+            <label><input type="radio" name="tr-dir" value="word"> Слово → вспомнить перевод</label>
+            <label><input type="radio" name="tr-dir" value="tr"> Перевод → вспомнить слово</label>
+          </div>
+        </div>
+        <button class="answer-btn tr-start" id="tr-start">Начать</button>
+        <p class="tr-empty" id="tr-empty" hidden>Отмеченных слов пока нет — отметьте их в уроках кликом по номеру или слову.</p>
+      </div>
+
+      <div id="tr-play" hidden>
+        <div class="tr-bar">
+          <span id="tr-pos"></span>
+          <button class="nav-btn" id="tr-exit">Выйти</button>
+        </div>
+        <div class="tr-card">
+          <div class="tr-from" id="tr-from"></div>
+          <div class="tr-prompt" id="tr-prompt"></div>
+          <div id="tr-back" hidden></div>
+          <form id="tr-form" autocomplete="off" hidden>
+            <input type="text" id="tr-input" placeholder="Слово по-японски: кандзи или чтение" autocomplete="off" autocapitalize="off" spellcheck="false">
+            <button type="submit" class="nav-btn" id="tr-check">Проверить</button>
+          </form>
+          <div class="tr-feedback" id="tr-feedback" hidden></div>
+          <div class="tr-actions" id="tr-actions"></div>
+        </div>
+      </div>
+
+      <div id="tr-done" hidden>
+        <h2 class="tr-title">Готово</h2>
+        <p id="tr-summary"></p>
+        <div id="tr-mistakes"></div>
+        <div class="tr-row">
+          <button class="nav-btn" id="tr-again-wrong" hidden>Повторить ошибки</button>
+          <button class="nav-btn" id="tr-again">Ещё раз</button>
+          <button class="nav-btn" id="tr-back-setup">К настройкам</button>
+        </div>
+      </div>
+    </section>
+
+    <div id="lesson-view">
+
+    <section id="tab-words" class="tab-panel">
+      <div class="toolbar">
+        <label class="toggle"><input type="checkbox" data-toggle="reading"> Чтение</label>
+        <label class="toggle"><input type="checkbox" data-toggle="translation"> Перевод</label>
+        <label class="toggle toggle-marked"><input type="checkbox" id="only-marked"> Только отмеченные</label>
+        <button class="nav-btn btn-small" id="mark-all" title="Отметить все слова этого урока">Отметить все</button>
+        <button class="nav-btn btn-small" id="unmark-all" title="Снять отметки со всех слов этого урока">Снять отметки</button>
+        <span class="hint" title="Клик по номеру или слову — отметить; по размытой ячейке — открыть">Клик по № или слову — отметить, по размытому — открыть</span>
+        <span class="count" id="word-count"></span>
+      </div>
+
+      <table class="words" id="words-table">
+        <thead>
+          <tr>
+            <th class="col-num">#</th>
+            <th class="col-word">Слово</th>
+            <th class="col-reading">Чтение</th>
+            <th class="col-translation">Перевод</th>
+            <th class="col-note">Пометка</th>
+          </tr>
+        </thead>
+        <tbody id="words-body"></tbody>
+      </table>
+      <p class="legend"><span class="opt">[ ]</span> — часть фразы, которую можно опустить · ～ — сюда подставляется слово · － — сюда подставляется число</p>
+      <p class="empty" id="words-empty" hidden>В этом уроке слов пока нет.</p>
+
+      <div id="reference" hidden>
+        <h3 class="ref-title" id="ref-title"></h3>
+        <div class="toolbar" id="ref-toolbar">
+          <label class="toggle"><input type="checkbox" data-ref-toggle="reading"> Чтение</label>
+          <label class="toggle"><input type="checkbox" data-ref-toggle="translation"> Перевод</label>
+          <span class="hint">Клик по размытой ячейке — открыть</span>
+          <span class="count" id="ref-count"></span>
+        </div>
+        <table class="words ref-table" id="ref-table">
+          <thead id="ref-head"></thead>
+          <tbody id="ref-body"></tbody>
+        </table>
+        <p class="ref-note" id="ref-note" hidden></p>
+      </div>
+    </section>
+
+    <section id="tab-grammar" class="tab-panel" hidden>
+      <div id="grammar-body"></div>
+    </section>
+
+    <section id="tab-exercises" class="tab-panel" hidden>
+      <div id="exercises-body"></div>
+    </section>
+    </div>
+  </main>
+
+  <button class="to-top" id="to-top" title="Наверх" aria-label="Наверх" hidden>↑</button>
+
+  <!-- Окно упражнения -->
+  <div class="modal-backdrop" id="ex-modal" hidden>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="ex-modal-title">
+      <div class="modal-head">
+        <span class="modal-title" id="ex-modal-title"></span>
+        <button class="modal-close" id="ex-close" aria-label="Закрыть">✕</button>
+      </div>
+      <div class="modal-task" id="ex-task"></div>
+      <div id="ex-given"></div>
+      <div class="modal-hint">
+        <div class="modal-label">Подсказка</div>
+        <div id="ex-hint"></div>
+      </div>
+      <button class="answer-btn" id="ex-answer-btn">Показать ответ</button>
+      <div class="modal-answer" id="ex-answer" hidden></div>
+      <div class="modal-nav">
+        <button class="nav-btn" id="ex-prev">← Назад</button>
+        <span class="modal-pos" id="ex-pos"></span>
+        <button class="nav-btn" id="ex-next">Дальше →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Данные: сначала реестр, затем уроки -->
+  <script src="data/lessons.js"></script>
+  <script src="data/lesson01.js"></script>
+  <script src="data/lesson02.js"></script>
+  <script src="data/lesson03.js"></script>
+  <script src="data/lesson04.js"></script>
+  <script src="data/lesson05.js"></script>
+  <script src="data/lesson06.js"></script>
+  <script src="data/lesson07.js"></script>
+  <script src="data/lesson08.js"></script>
+  <script src="data/lesson09.js"></script>
+  <script src="data/lesson10.js"></script>
+  <script src="data/lesson11.js"></script>
+  <script src="data/lesson12.js"></script>
+  <script src="data/lesson13.js"></script>
+  <script src="data/lesson14.js"></script>
+  <script src="data/lesson15.js"></script>
+  <script src="data/lesson16.js"></script>
+  <script src="data/lesson17.js"></script>
+  <script src="data/lesson18.js"></script>
+  <script src="data/lesson19.js"></script>
+  <script src="data/lesson20.js"></script>
+  <script src="data/lesson21.js"></script>
+  <script src="data/lesson22.js"></script>
+  <script src="data/lesson23.js"></script>
+  <script src="data/lesson24.js"></script>
+  <script src="data/lesson25.js"></script>
+
+  <script src="app.js"></script>
+</body>
+</html>
