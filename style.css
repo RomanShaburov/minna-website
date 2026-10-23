@@ -631,6 +631,8 @@ td.col-note { color: var(--muted); font-size: 14px; }
 
 /* ---------- Узкий экран ---------- */
 @media (max-width: 640px) {
+  /* На телефоне шапка высокая — пусть уезжает, а к верху липнет только панель над таблицей */
+  .header { position: static; }
   .col-note { display: none; }
   .words th, .words td { padding: 6px 8px; }
   td.col-word { font-size: 20px; }

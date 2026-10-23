@@ -913,7 +913,9 @@
 
   // Высота липкой шапки — чтобы панели над таблицами прилипали прямо под ней
   function syncHeaderHeight() {
-    document.documentElement.style.setProperty("--header-h", document.querySelector(".header").offsetHeight + "px");
+    var header = document.querySelector(".header");
+    var sticky = getComputedStyle(header).position === "sticky";  // на телефоне шапка не липкая
+    document.documentElement.style.setProperty("--header-h", (sticky ? header.offsetHeight : 0) + "px");
   }
   window.addEventListener("resize", syncHeaderHeight);
   if (window.ResizeObserver) new ResizeObserver(syncHeaderHeight).observe(document.querySelector(".header"));
