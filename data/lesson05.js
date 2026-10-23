@@ -22,8 +22,8 @@ LESSONS[5] = {
 
     { kanji: "人",     reading: "ひと",       translation: "человек",             note: "" },
     { kanji: "友達",   reading: "ともだち",   translation: "друг",                note: "" },
-    { kanji: "彼",     reading: "かれ",       translation: "он, бойфренд, любовник", note: "* в уроке не используется" },
-    { kanji: "彼女",   reading: "かのじょ",   translation: "она, гёрлфренд, любовница", note: "" },
+    { kanji: "彼",     reading: "かれ",       translation: "он, парень, бойфренд, любовник", note: "* в уроке не используется" },
+    { kanji: "彼女",   reading: "かのじょ",   translation: "она, девушка, гёрлфренд, любовница", note: "" },
     { kanji: "家族",   reading: "かぞく",     translation: "семья",               note: "" },
     { kanji: "一人で", reading: "ひとりで",   translation: "один, одинокий",      note: "" },
 
