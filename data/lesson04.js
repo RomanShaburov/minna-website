@@ -85,13 +85,13 @@ LESSONS[4] = {
     title: "Справочно: телефон и письмо (電話・手紙)",
     columns: ["Телефоны служб", "Как пишут адрес"],
     rows: [
-      [{ kanji: "警察署", reading: "けいさつしょ", translation: "полиция — 110" },                     { kanji: "〒 (郵便番号)", reading: "〒 (ゆうびんばんごう)", translation: "почтовый индекс: 〒658-0063" }],
-      [{ kanji: "消防署", reading: "しょうぼうしょ", translation: "пожарная охрана / скорая помощь — 119" }, { kanji: "県", reading: "けん", translation: "префектура: 兵庫県 (ひょうごけん)" }],
-      [{ kanji: "時報", reading: "じほう", translation: "служба точного времени — 117" },               { kanji: "市", reading: "し", translation: "город: 神戸市 (こうべし)" }],
-      [{ kanji: "天気予報", reading: "てんきよほう", translation: "прогноз погоды — 177" },             { kanji: "区", reading: "く", translation: "район: 中央区 (ちゅうおうく)" }],
-      [{ kanji: "電話番号案内", reading: "でんわばんごうあんない", translation: "телефонная справочная — 104" }, { kanji: "三宮 1-23", reading: "さんのみや 1-23", translation: "квартал" }],
-      [null,                                                                                             { kanji: "", reading: "コウベハイツ", translation: "название здания" }],
-      [null,                                                                                             { kanji: "号", reading: "ごう", translation: "номер квартиры: 405号" }],
+      [{ kanji: "警察署", reading: "けいさつしょ", translation: "полиция — 110" },                     { kanji: "〒 (郵便番号)", reading: "〒 (ゆうびんばんごう)", translation: "почтовый индекс (в примере — 658-0063)" }],
+      [{ kanji: "消防署", reading: "しょうぼうしょ", translation: "пожарная охрана / скорая помощь — 119" }, { kanji: "県", reading: "けん", translation: "префектура (в примере — Хёго)" }],
+      [{ kanji: "時報", reading: "じほう", translation: "служба точного времени — 117" },               { kanji: "市", reading: "し", translation: "город (в примере — Кобе)" }],
+      [{ kanji: "天気予報", reading: "てんきよほう", translation: "прогноз погоды — 177" },             { kanji: "区", reading: "く", translation: "район (в примере — Тюо)" }],
+      [{ kanji: "電話番号案内", reading: "でんわばんごうあんない", translation: "телефонная справочная — 104" }, { kanji: "三宮 1-23", reading: "さんのみや 1-23", translation: "квартал (в примере — Санномия, 1-23)" }],
+      [null,                                                                                             { kanji: "", reading: "コウベハイツ", translation: "название здания (в примере — «Кобе Хайтс»)" }],
+      [null,                                                                                             { kanji: "号", reading: "ごう", translation: "номер квартиры (в примере — 405)" }],
       [null,                                                                                             { kanji: "手紙", reading: "てがみ", translation: "письмо" }]
     ]
   },
