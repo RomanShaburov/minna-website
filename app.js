@@ -830,6 +830,87 @@
     else if (tr.revealed && e.key === "ArrowRight") { recordResult(true); nextCard(); }
   });
 
+  // Звёзды для темы «Космос»: случайные место, размер и темп мерцания; видны только в этой теме (style.css)
+  (function makeStars() {
+    var field = document.createElement("div");
+    field.id = "starfield";
+    var html = "";
+    for (var i = 0; i < 70; i++) {
+      var big = Math.random() < 0.12;
+      var size = big ? 2.5 + Math.random() * 1.5 : 1 + Math.random() * 1.2;
+      html += '<span class="star' + (big ? " big" : "") + '" style="' +
+        "left:" + (Math.random() * 100).toFixed(2) + "%;top:" + (Math.random() * 100).toFixed(2) + "%;" +
+        "width:" + size.toFixed(1) + "px;height:" + size.toFixed(1) + "px;" +
+        "--lo:" + (0.25 + Math.random() * 0.3).toFixed(2) + ";" +
+        "--d:" + (3 + Math.random() * 5).toFixed(1) + "s;--delay:-" + (Math.random() * 8).toFixed(1) + 's"></span>';
+    }
+    field.innerHTML = html;
+    document.body.insertBefore(field, document.body.firstChild);
+
+    // Комета: изредка выныривает из-за бокового края, проходит дугу и целиком уходит за тот же край.
+    // Хвост рисуется по уже пройденному пути, поэтому повторяет траекторию.
+    var COMET_PAUSE = [30000, 70000];   // пауза между кометами, мс (от, до)
+    var COMET_FLIGHT = [4000, 7000];   // длительность полёта, мс (от, до)
+    var TAIL = 0.2;                    // длина хвоста в долях пути
+    var reduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var canvas = document.createElement("canvas");
+    canvas.className = "comet-canvas";
+    field.appendChild(canvas);
+    var ctx = canvas.getContext && canvas.getContext("2d");
+
+    function rand(r) { return r[0] + Math.random() * (r[1] - r[0]); }
+
+    function flyComet() {
+      if (!ctx || reduced || document.hidden || document.documentElement.getAttribute("data-theme") !== "space") {
+        setTimeout(flyComet, rand(COMET_PAUSE));
+        return;
+      }
+      var dpr = window.devicePixelRatio || 1;
+      var w = window.innerWidth, h = window.innerHeight;
+      canvas.width = w * dpr; canvas.height = h * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+      var fromLeft = Math.random() < 0.5;
+      var out = 40;                                   // старт и финиш — за краем экрана
+      var reach = out + 110 + Math.random() * 120;    // насколько вершина дуги заходит внутрь
+      var edge = fromLeft ? -out : w + out;
+      var dir = fromLeft ? 1 : -1;
+      var y0 = h * (0.1 + Math.random() * 0.45);
+      var dy = h * (0.25 + Math.random() * 0.3);
+      // x по параболе: на краю при t = 0 и t = 1, вершина при t = 0.5
+      function at(t) { return [edge + dir * 4 * reach * t * (1 - t), y0 + dy * t]; }
+
+      var flight = rand(COMET_FLIGHT);
+      var start = null;
+      function frame(now) {
+        if (start === null) start = now;
+        var t = (now - start) / flight * (1 + TAIL);  // голова идёт дальше t = 1, пока хвост не скроется
+        ctx.clearRect(0, 0, w, h);
+        var steps = 40;
+        for (var i = 0; i < steps; i++) {
+          var k0 = i / steps, k1 = (i + 1) / steps;
+          var a = at(t - TAIL * (1 - k0)), b = at(t - TAIL * (1 - k1));
+          ctx.strokeStyle = "rgba(200, 212, 255, " + (0.75 * k1 * k1).toFixed(3) + ")";
+          ctx.lineWidth = 0.4 + 1.8 * k1;
+          ctx.lineCap = "round";
+          ctx.beginPath(); ctx.moveTo(a[0], a[1]); ctx.lineTo(b[0], b[1]); ctx.stroke();
+        }
+        var head = at(t);
+        var g = ctx.createRadialGradient(head[0], head[1], 0, head[0], head[1], 6);
+        g.addColorStop(0, "rgba(255, 255, 255, 1)");
+        g.addColorStop(0.4, "rgba(210, 220, 255, 0.6)");
+        g.addColorStop(1, "rgba(210, 220, 255, 0)");
+        ctx.fillStyle = g;
+        ctx.beginPath(); ctx.arc(head[0], head[1], 6, 0, Math.PI * 2); ctx.fill();
+
+        if (t < 1 + TAIL) requestAnimationFrame(frame);
+        else { ctx.clearRect(0, 0, w, h); setTimeout(flyComet, rand(COMET_PAUSE)); }
+      }
+      requestAnimationFrame(frame);
+    }
+    setTimeout(flyComet, rand(COMET_PAUSE));
+  })();
+
   // Высота липкой шапки — чтобы панели над таблицами прилипали прямо под ней
   function syncHeaderHeight() {
     document.documentElement.style.setProperty("--header-h", document.querySelector(".header").offsetHeight + "px");
