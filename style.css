@@ -643,6 +643,18 @@ td.col-note { color: var(--muted); font-size: 14px; }
   .word-read { display: block; }
   /* Слово до ~6 знаков — в одну строку; перенос только у очень длинных */
   #words-table td.col-word { min-width: 6.2em; }
+  /* Длинные русские слова в переводе переносятся по слогам, чтобы таблица не вылезала за экран */
+  #words-table td.col-translation { hyphens: auto; -webkit-hyphens: auto; overflow-wrap: anywhere; }
+  /* Справка не должна распирать страницу: колонки поровну, длинные слова переносятся */
+  .ref-table { table-layout: fixed; }
+  .ref-table td, .ref-table th { overflow-wrap: anywhere; }
+  /* Поиск и выбор «Все уроки» — на всю ширину строки, сжимаются вместе с экраном */
+  .search-box { flex-basis: 100%; min-width: 0; }
+  .search-box input { width: 0; }
+  .search-box select { flex: 0 1 auto; min-width: 0; max-width: 45%; }
+  /* Вкладки урока на узком телефоне переносятся, а не вылезают за край */
+  .tabs { flex-wrap: wrap; }
+  .tab { padding: 6px 10px; }
   .words th, .words td { padding: 6px 8px; }
   td.col-word { font-size: 20px; }
   .count { margin-left: 0; }
