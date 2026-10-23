@@ -31,8 +31,8 @@ LESSONS[17] = {
     { kanji: "上着", reading: "うわぎ",   translation: "пиджак, жакет", note: "" },
     { kanji: "下着", reading: "したぎ",   translation: "нижнее бельё", note: "" },
 
-    { kanji: "2、3日", reading: "2、3にち", translation: "2-3 дня (иногда переводится «несколько дней»)", note: "" },
-    { kanji: "",       reading: "2、3～",   translation: "немного ~ (~ – счётный суффикс)", note: "" },
+    { kanji: "2、3日", reading: "にさんにち", translation: "2-3 дня (иногда переводится «несколько дней»)", note: "" },
+    { kanji: "2、3～", reading: "にさん～", translation: "немного ~ (~ – счётный суффикс)", note: "например: 2、3人 (にさんにん) — 2-3 человека" },
     { kanji: "",       reading: "～までに", translation: "до (при обозначении крайнего срока, предела во времени)", note: "" },
     { kanji: "",       reading: "ですから", translation: "поэтому", note: "" },
 

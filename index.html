@@ -120,15 +120,16 @@
     <div id="lesson-view">
 
     <section id="tab-words" class="tab-panel">
+      <div class="sticky-scope">
       <div class="toolbar">
         <label class="toggle"><input type="checkbox" data-toggle="reading"> Чтение</label>
         <label class="toggle"><input type="checkbox" data-toggle="translation"> Перевод</label>
         <label class="toggle toggle-marked"><input type="checkbox" id="only-marked"> Только отмеченные</label>
         <button class="nav-btn btn-small" id="mark-all" title="Отметить все слова этого урока">Отметить все</button>
         <button class="nav-btn btn-small" id="unmark-all" title="Снять отметки со всех слов этого урока">Снять отметки</button>
-        <span class="hint" title="Клик по номеру или слову — отметить; по размытой ячейке — открыть">Клик по № или слову — отметить, по размытому — открыть</span>
         <span class="count" id="word-count"></span>
       </div>
+      <p class="table-hint">Клик по № или слову — отметить строку · клик по размытой ячейке — открыть её</p>
 
       <table class="words" id="words-table">
         <thead>
@@ -142,6 +143,7 @@
         </thead>
         <tbody id="words-body"></tbody>
       </table>
+      </div>
       <p class="legend"><span class="opt">[ ]</span> — часть фразы, которую можно опустить · ～ — сюда подставляется слово · － — сюда подставляется число</p>
       <p class="empty" id="words-empty" hidden>В этом уроке слов пока нет.</p>
 

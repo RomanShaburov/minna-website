@@ -830,6 +830,14 @@
     else if (tr.revealed && e.key === "ArrowRight") { recordResult(true); nextCard(); }
   });
 
+  // Высота липкой шапки — чтобы панели над таблицами прилипали прямо под ней
+  function syncHeaderHeight() {
+    document.documentElement.style.setProperty("--header-h", document.querySelector(".header").offsetHeight + "px");
+  }
+  window.addEventListener("resize", syncHeaderHeight);
+  if (window.ResizeObserver) new ResizeObserver(syncHeaderHeight).observe(document.querySelector(".header"));
+  syncHeaderHeight();
+
   // ---------- Старт ----------
   if (!(state.lesson >= 1 && state.lesson <= LESSON_COUNT)) state.lesson = 1;
   if (["words", "grammar", "exercises"].indexOf(state.tab) < 0) state.tab = "words";

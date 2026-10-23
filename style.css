@@ -350,7 +350,12 @@ td.col-num, td.col-word { cursor: pointer; }
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 8px;
+  /* Панель прилипает под шапкой при прокрутке таблицы; высоту шапки задаёт app.js */
+  position: sticky;
+  top: var(--header-h, 0px);
+  z-index: 9;
 }
+.table-hint { margin: -6px 2px 10px; color: var(--muted); font-size: 13px; }
 .toggle { cursor: pointer; user-select: none; }
 .toggle input { accent-color: var(--accent); }
 .toggle { white-space: nowrap; }
