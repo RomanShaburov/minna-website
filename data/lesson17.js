@@ -51,8 +51,8 @@ LESSONS[17] = {
     columns: ["", ""],
     rows: [
       [{ kanji: "", reading: "どう しましたか。", translation: "Что с вами случилось?" },                             { kanji: "頭が 痛い", reading: "あたまが いたい", translation: "болит голова" }],
-      [{ kanji: "", reading: "おなかが 痛い", translation: "болит живот" },                                            { kanji: "歯が 痛い", reading: "はが いたい", translation: "болит зуб" }],
-      [{ kanji: "熱が あります", reading: "ねつが あります", translation: "есть жар; лихорадка, горячка" },             { kanji: "", reading: "せきが 出ます", translation: "кашлять, (у кого) кашель" }],
+      [{ kanji: "おなかが 痛い", reading: "おなかが いたい", translation: "болит живот" },                                            { kanji: "歯が 痛い", reading: "はが いたい", translation: "болит зуб" }],
+      [{ kanji: "熱が あります", reading: "ねつが あります", translation: "есть жар; лихорадка, горячка" },             { kanji: "せきが 出ます", reading: "せきが でます", translation: "кашлять, (у кого) кашель" }],
       [{ kanji: "鼻水が 出ます", reading: "はなみずが でます", translation: "(у кого) насморк" },                       { kanji: "血が 出ます", reading: "ちが でます", translation: "течет кровь, (у кого) кровотечение" }],
       [{ kanji: "吐き気が します", reading: "はきけが します", translation: "чувствовать тошноту" },                     { kanji: "寒気が します", reading: "さむけが します", translation: "испытывать озноб" }],
       [{ kanji: "", reading: "めまいが します", translation: "голова кружится, (у кого) головокружение" },              { kanji: "下痢を します", reading: "げりを します", translation: "(у кого) понос" }],
