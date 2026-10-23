@@ -458,7 +458,7 @@
       if (l.reference) {
         l.reference.rows.forEach(function (row, ri) {
           row.forEach(function (w) {
-            if (w && hit(w)) out.push({ lesson: n, kind: "ref", i: ri, w: w, where: "справка: " + (l.reference.title || "").replace(/^справочно:\s*/i, "") });
+            if (w && hit(w)) out.push({ lesson: n, kind: "ref", i: ri, w: w, where: "справка: " + (l.reference.title || "").replace(/^справочн(о|ик):\s*/i, "") });
           });
         });
       }

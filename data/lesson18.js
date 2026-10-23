@@ -43,7 +43,7 @@ LESSONS[18] = {
 
   // Справочная информация: движения (動き)
   reference: {
-    title: "Справочно: движения (動き)",
+    title: "Справочник: движения (動き)",
     columns: ["", ""],
     rows: [
       [{ kanji: "飛ぶ", reading: "とぶ", translation: "летать" },                                        { kanji: "跳ぶ", reading: "とぶ", translation: "прыгать" }],

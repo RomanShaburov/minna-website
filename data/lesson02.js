@@ -59,7 +59,7 @@ LESSONS[2] = {
 
   // Справочная информация: самые распространённые японские фамилии (по порядку)
   reference: {
-    title: "Справочно: 20 самых частых японских фамилий",
+    title: "Справочник: 20 самых частых японских фамилий",
     columns: ["", "", "", ""],
     rows: [
       [{ kanji: "佐藤", reading: "さとう", translation: "Сато" },   { kanji: "鈴木", reading: "すずき", translation: "Судзуки" },   { kanji: "高橋", reading: "たかはし", translation: "Такахаси" }, { kanji: "田中", reading: "たなか", translation: "Танака" }],

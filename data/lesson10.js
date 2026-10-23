@@ -65,7 +65,7 @@ LESSONS[10] = {
 
   // Справочная информация: в доме (うちの 中)
   reference: {
-    title: "Справочно: в доме (うちの 中)",
+    title: "Справочник: в доме (うちの 中)",
     columns: ["", ""],
     rows: [
       [{ kanji: "玄関", reading: "げんかん", translation: "прихожая" },             { kanji: "食堂", reading: "しょくどう", translation: "столовая" }],

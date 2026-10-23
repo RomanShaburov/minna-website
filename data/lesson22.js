@@ -46,7 +46,7 @@ LESSONS[22] = {
 
   // Справочная информация: одежда (衣服)
   reference: {
-    title: "Справочно: одежда (衣服)",
+    title: "Справочник: одежда (衣服)",
     columns: ["", ""],
     rows: [
       [{ kanji: "", reading: "スーツ", translation: "костюм" },                       { kanji: "", reading: "ワンピース", translation: "платье" }],

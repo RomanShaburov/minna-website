@@ -80,7 +80,7 @@ LESSONS[11] = {
 
   // Справочная информация: меню (メニュー)
   reference: {
-    title: "Справочно: меню (メニュー)",
+    title: "Справочник: меню (メニュー)",
     columns: ["", ""],
     rows: [
       [{ kanji: "定食", reading: "ていしょく", translation: "комплексный обед" },                    { kanji: "", reading: "カレーライス", translation: "соус карри с рисом" }],
@@ -94,7 +94,7 @@ LESSONS[11] = {
       [{ kanji: "みそ汁", reading: "みそしる", translation: "суп-мисо" },                            { kanji: "", reading: "ピザ", translation: "пицца" }],
       [{ kanji: "", reading: "おにぎり", translation: "рисовые колобки" },                           { kanji: "", reading: "ハンバーガー", translation: "гамбургер" }],
       [{ kanji: "", reading: "てんぷら", translation: "темпура (морепродукты и овощи в кляре)" },    { kanji: "", reading: "サンドイッチ", translation: "бутерброд" }],
-      [{ kanji: "", reading: "すし", translation: "суси" },                                          { kanji: "", reading: "トースト", translation: "тост" }],
+      [{ kanji: "", reading: "すし", translation: "суси (суши)" },                                          { kanji: "", reading: "トースト", translation: "тост" }],
       [{ kanji: "", reading: "うどん", translation: "лапша из пшеничной муки" },                     { kanji: "", reading: "コーヒー", translation: "кофе" }],
       [{ kanji: "", reading: "そば", translation: "лапша из гречневой муки" },                       { kanji: "紅茶", reading: "こうちゃ", translation: "чёрный (английский) чай" }],
       [{ kanji: "", reading: "ラーメン", translation: "китайский суп-лапша с мясом и овощами" },     { kanji: "", reading: "ココア", translation: "какао" }],
