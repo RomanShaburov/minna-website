@@ -65,8 +65,8 @@
     return jp(w.kanji || w.reading);
   }
 
-  // Чтение показываем только если в слове есть кандзи — у слов из одной каны оно дублирует само слово
-  var KANJI_RE = /[㐀-䶿一-鿿々]/;
+  // Чтение показываем только если в слове есть кандзи или цифры (1つ, 10) — у слов из одной каны оно дублирует само слово
+  var KANJI_RE = /[㐀-䶿一-鿿々0-9０-９]/;
   function needsReading(w) { return !!w.kanji && KANJI_RE.test(w.kanji); }
 
   function isFound(kind, i) {
