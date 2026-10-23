@@ -100,7 +100,9 @@
       var cls = (m ? "is-marked" : "") + (isFound("word", i) ? " is-found" : "");
       rows += '<tr data-i="' + i + '"' + (cls ? ' class="' + cls.trim() + '"' : "") + ">" +
         '<td class="col-num">' + (i + 1) + "</td>" +
-        '<td class="col-word">' + wordHtml(w) + "</td>" +
+        '<td class="col-word">' + wordHtml(w) +
+          // На телефоне колонка «Чтение» скрыта, чтение показывается здесь, под словом
+          (needsReading(w) ? '<div class="word-read"><span>' + jp(w.reading) + "</span></div>" : "") + "</td>" +
         '<td class="col-reading">' + (needsReading(w) ? "<span>" + jp(w.reading) + "</span>" : "") + "</td>" +
         '<td class="col-translation"><span>' + esc(w.translation) + "</span></td>" +
         '<td class="col-note">' + esc(w.note) + "</td>" +
@@ -341,6 +343,11 @@
     var tr = td.parentNode;
     var w = getLesson(state.lesson).words[Number(tr.dataset.i)];
 
+    var under = e.target.closest(".word-read");
+    if (under && !state.show.reading) {
+      under.classList.toggle("revealed");
+      return;
+    }
     if ((td.classList.contains("col-reading") && !state.show.reading) ||
         (td.classList.contains("col-translation") && !state.show.translation)) {
       td.classList.toggle("revealed");

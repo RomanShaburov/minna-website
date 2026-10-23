@@ -446,6 +446,10 @@ td.col-note { color: var(--muted); font-size: 14px; }
 .legend .opt { font-family: var(--jp-font); }
 
 /* ---------- Скрытие для самопроверки ---------- */
+/* Чтение под словом — только на узком экране (см. медиазапрос ниже) */
+.word-read { display: none; font-size: 14px; color: var(--accent); line-height: 1.3; }
+.hide-reading .word-read:not(.revealed) { cursor: pointer; }
+.hide-reading .word-read:not(.revealed) > span { filter: blur(6px); opacity: 0.5; user-select: none; }
 .hide-reading td.col-reading:not(.revealed),
 .hide-translation td.col-translation:not(.revealed) {
   cursor: pointer;
@@ -634,6 +638,11 @@ td.col-note { color: var(--muted); font-size: 14px; }
   /* На телефоне шапка высокая — пусть уезжает, а к верху липнет только панель над таблицей */
   .header { position: static; }
   .col-note { display: none; }
+  /* Чтение переезжает под слово — колонке слова достаётся больше места */
+  #words-table .col-reading { display: none; }
+  .word-read { display: block; }
+  /* Слово до ~6 знаков — в одну строку; перенос только у очень длинных */
+  #words-table td.col-word { min-width: 6.2em; }
   .words th, .words td { padding: 6px 8px; }
   td.col-word { font-size: 20px; }
   .count { margin-left: 0; }
