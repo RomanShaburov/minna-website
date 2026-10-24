@@ -475,7 +475,21 @@
     $("search-results").hidden = !on;
     $("trainer-view").hidden = !trainerOn;
     $("lesson-view").hidden = on || trainerOn;
+    syncTrainerMode();
   }
+
+  // Режим тренажёра: на телефоне прячем заголовок урока и сворачиваем список уроков (style.css)
+  function syncTrainerMode() {
+    document.body.classList.toggle("trainer-on", trainerOn);
+    setNavOpen(false);
+  }
+  function setNavOpen(open) {
+    document.querySelector(".header").classList.toggle("nav-open", open);
+    $("nav-toggle").setAttribute("aria-expanded", String(open));
+  }
+  $("nav-toggle").addEventListener("click", function () {
+    setNavOpen($("nav-toggle").getAttribute("aria-expanded") !== "true");
+  });
 
   function renderSearch() {
     var query = $("search-input").value;
@@ -611,6 +625,7 @@
     $("search-results").hidden = true;
     $("lesson-view").hidden = true;
     $("trainer-view").hidden = false;
+    syncTrainerMode();
     // выбранные уроки без отмеченных слов отбрасываем; если выбора нет — берём все с отметками
     var avail = [];
     for (var n = 1; n <= LESSON_COUNT; n++) if (markedCount(n)) avail.push(n);
