@@ -149,33 +149,6 @@
 @media (prefers-reduced-motion: reduce) {
   .star { animation: none; opacity: 0.8; }
 }
-/* Космос на телефоне: шапка полупрозрачная, а плашка уроков — «жидкое стекло» с размытием того, что за ней.
-   На компьютере эффект мешал, там шапка обычная. */
-@media (max-width: 640px) {
-  [data-theme="space"] .header {
-    background: rgba(18, 15, 51, 0.55);
-    -webkit-backdrop-filter: blur(10px);
-    backdrop-filter: blur(10px);
-  }
-  [data-theme="space"] .lessons {
-    padding: 8px;
-    border-radius: 14px;
-    background: linear-gradient(160deg, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0.02) 45%, rgba(255, 255, 255, 0.07));
-    border: 1px solid rgba(255, 255, 255, 0.16);
-    box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.3),
-      inset 0 -1px 0 rgba(0, 0, 0, 0.2),
-      0 8px 24px rgba(0, 0, 0, 0.3);
-    -webkit-backdrop-filter: blur(16px) saturate(170%);
-    backdrop-filter: blur(16px) saturate(170%);
-  }
-  [data-theme="space"] .lesson-btn:not(.is-active):not(.is-done) {
-    border-color: rgba(255, 255, 255, 0.14);
-    border-radius: 9px;
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.02));
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16);
-  }
-}
 [data-theme="space"] .header,
 [data-theme="space"] .toolbar,
 [data-theme="space"] .words { box-shadow: 0 0 18px rgba(124, 58, 237, 0.18); }
