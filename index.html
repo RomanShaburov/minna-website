@@ -4,6 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Minna no Nihongo — слова</title>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#120f33">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
   <link rel="stylesheet" href="style.css">
   <script>
     // Тема применяется до отрисовки, чтобы при обновлении страницы не мигал прежний цвет
@@ -229,5 +232,13 @@
   <script src="data/lesson25.js"></script>
 
   <script src="app.js"></script>
+  <script>
+    // Офлайн-режим и установка на телефон (нужен https или localhost)
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", function () {
+        navigator.serviceWorker.register("sw.js").catch(function () {});
+      });
+    }
+  </script>
 </body>
 </html>
