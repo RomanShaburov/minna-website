@@ -408,6 +408,19 @@
     if (state.theme === "auto") document.documentElement.removeAttribute("data-theme");
     else document.documentElement.setAttribute("data-theme", state.theme);
     $("theme-select").value = state.theme;
+    syncThemeColor();
+  }
+
+  // Цвет системной полосы телефона (строка состояния) — как у шапки текущей темы
+  function syncThemeColor() {
+    var meta = document.querySelector('meta[name="theme-color"]');
+    var color = getComputedStyle(document.documentElement).getPropertyValue("--surface").trim();
+    if (meta && color) meta.setAttribute("content", color);
+  }
+  if (window.matchMedia) {
+    var darkQuery = window.matchMedia("(prefers-color-scheme: dark)");
+    var onSchemeChange = function () { if (state.theme === "auto") syncThemeColor(); };
+    if (darkQuery.addEventListener) darkQuery.addEventListener("change", onSchemeChange);
   }
 
   $("theme-select").addEventListener("change", function (e) {
@@ -567,7 +580,23 @@
     var row = document.querySelector(r.kind === "word"
       ? '#words-body tr[data-i="' + r.i + '"]'
       : '#ref-body tr[data-r="' + r.i + '"]');
-    if (row) row.scrollIntoView({ block: "center" });
+    // Убираем клавиатуру: на телефоне она сдвигает экран уже после прокрутки
+    $("search-input").blur();
+    if (row) {
+      centerRow(row);
+      // вёрстка на телефоне доезжает позже (шрифты, адресная строка) — выравниваем ещё раз
+      setTimeout(function () { centerRow(row); }, 150);
+      setTimeout(function () { centerRow(row); }, 450);
+    }
+  }
+
+  // Ставит строку в середину видимой области (ниже закреплённой шапки, если она закреплена)
+  function centerRow(row) {
+    var header = document.querySelector(".header");
+    var top = header && getComputedStyle(header).position === "sticky" ? header.getBoundingClientRect().height : 0;
+    var rect = row.getBoundingClientRect();
+    var target = window.scrollY + rect.top - top - (window.innerHeight - top - rect.height) / 2;
+    window.scrollTo(0, Math.max(0, target));
   }
 
   $("search-input").addEventListener("input", renderSearch);
