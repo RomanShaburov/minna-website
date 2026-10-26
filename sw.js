@@ -1,7 +1,8 @@
 // Офлайн-режим: файлы сайта сохраняются в телефон при первом открытии.
-// Пока есть интернет, берём свежие файлы (и обновляем сохранённые), без интернета — отдаём сохранённые.
-// При смене состава файлов поменяйте номер в CACHE.
-var CACHE = "minna-v1";
+// Файлы всегда отдаются из сохранённых — приложение открывается сразу при любой сети.
+// Новая версия скачивается в фоне и включается кнопкой «Обновить» на плашке.
+// После любой правки файлов поменяйте номер в CACHE — иначе телефоны не узнают об обновлении.
+var CACHE = "minna-v2";
 var FILES = [
   "./",
   "index.html",
@@ -39,8 +40,15 @@ var FILES = [
 ];
 
 self.addEventListener("install", function (e) {
-  e.waitUntil(caches.open(CACHE).then(function (c) { return c.addAll(FILES); }));
-  self.skipWaiting();
+  // cache: "reload" — мимо HTTP-кеша браузера, чтобы в новую версию не попали старые файлы
+  e.waitUntil(caches.open(CACHE).then(function (c) {
+    return c.addAll(FILES.map(function (f) { return new Request(f, { cache: "reload" }); }));
+  }));
+});
+
+// Страница присылает это по кнопке «Обновить»
+self.addEventListener("message", function (e) {
+  if (e.data === "skipWaiting") self.skipWaiting();
 });
 
 self.addEventListener("activate", function (e) {
@@ -56,14 +64,14 @@ self.addEventListener("fetch", function (e) {
   var req = e.request;
   if (req.method !== "GET" || new URL(req.url).origin !== location.origin) return;
   e.respondWith(
-    fetch(req).then(function (res) {
-      var copy = res.clone();
-      if (res.ok) caches.open(CACHE).then(function (c) { c.put(req, copy); });
-      return res;
-    }).catch(function () {
-      return caches.match(req, { ignoreSearch: true }).then(function (hit) {
-        return hit || caches.match("index.html");
+    caches.open(CACHE).then(function (c) {
+      return c.match(req, { ignoreSearch: true }).then(function (hit) {
+        if (hit) return hit;
+        if (req.mode === "navigate") return c.match("index.html");
+        return fetch(req);
       });
+    }).then(function (res) {
+      return res || fetch(req);
     })
   );
 });

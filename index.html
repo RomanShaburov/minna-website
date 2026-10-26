@@ -180,6 +180,13 @@
 
   <button class="to-top" id="to-top" title="Наверх" aria-label="Наверх" hidden>↑</button>
 
+  <!-- Плашка обновления: появляется, когда новая версия сайта уже скачана в телефон -->
+  <div class="update-bar" id="update-bar" role="status" hidden>
+    <span>Доступна новая версия</span>
+    <button class="nav-btn" id="update-btn">Обновить</button>
+    <button class="update-close" id="update-close" aria-label="Закрыть">✕</button>
+  </div>
+
   <!-- Окно упражнения -->
   <div class="modal-backdrop" id="ex-modal" hidden>
     <div class="modal" role="dialog" aria-modal="true" aria-labelledby="ex-modal-title">
@@ -235,8 +242,43 @@
   <script>
     // Офлайн-режим и установка на телефон (нужен https или localhost)
     if ("serviceWorker" in navigator) {
+      var waitingWorker = null;
+      var userUpdate = false;
+      var bar = document.getElementById("update-bar");
+
+      function showUpdate(worker) {
+        waitingWorker = worker;
+        bar.hidden = false;
+      }
+
+      document.getElementById("update-btn").addEventListener("click", function () {
+        userUpdate = true;
+        if (waitingWorker) waitingWorker.postMessage("skipWaiting");
+      });
+      document.getElementById("update-close").addEventListener("click", function () {
+        bar.hidden = true;
+      });
+
+      // Новая версия включилась — перезагружаемся, но только по кнопке, а не при первой установке
+      navigator.serviceWorker.addEventListener("controllerchange", function () {
+        if (userUpdate) location.reload();
+      });
+
       window.addEventListener("load", function () {
-        navigator.serviceWorker.register("sw.js").catch(function () {});
+        navigator.serviceWorker.register("sw.js").then(function (reg) {
+          // controller есть — значит, это обновление, а не первая установка
+          if (reg.waiting && navigator.serviceWorker.controller) showUpdate(reg.waiting);
+          reg.addEventListener("updatefound", function () {
+            var w = reg.installing;
+            w.addEventListener("statechange", function () {
+              if (w.state === "installed" && navigator.serviceWorker.controller) showUpdate(w);
+            });
+          });
+          // Приложение могут держать открытым долго — проверяем обновление при возврате к нему
+          document.addEventListener("visibilitychange", function () {
+            if (!document.hidden) reg.update().catch(function () {});
+          });
+        }).catch(function () {});
       });
     }
   </script>
