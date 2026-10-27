@@ -506,6 +506,7 @@
 
   function renderSearch() {
     var query = $("search-input").value;
+    syncSearchMarquee();
     if (!norm(query)) { showSearch(false); renderSuggest([], query); return; }
     var all = runSearch(query);
     renderSuggest(all, query);
@@ -619,6 +620,28 @@
   });
   // Часть браузеров не шлёт input в конце набора через IME — обновляем результаты сами
   $("search-input").addEventListener("compositionend", renderSearch);
+
+  // Подсказка в пустом поле: если не влезает (на телефоне), бежит строкой вместо обрезанного текста
+  var marqueeReduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  function syncSearchMarquee() {
+    var input = $("search-input"), field = input.parentNode, box = $("search-marquee");
+    field.classList.remove("is-marquee");
+    if (marqueeReduced || input.value || document.activeElement === input) return;
+    var text = input.placeholder;
+    box.innerHTML = '<span class="search-marquee-run"><span></span><span></span></span>';
+    box.querySelectorAll(".search-marquee-run span").forEach(function (s) { s.textContent = text; });
+    field.classList.add("is-marquee");
+    var one = box.querySelector(".search-marquee-run span");
+    if (one.scrollWidth - parseFloat(getComputedStyle(one).paddingRight) <= box.clientWidth) {
+      field.classList.remove("is-marquee");
+      return;
+    }
+    box.firstChild.style.setProperty("--dur", (one.offsetWidth / 35).toFixed(1) + "s");  // ~35 px в секунду
+  }
+  $("search-input").addEventListener("blur", syncSearchMarquee);  // input и focus — через renderSearch
+  if (window.ResizeObserver) new ResizeObserver(syncSearchMarquee).observe($("search-input").parentNode);
+  else window.addEventListener("resize", syncSearchMarquee);
+  syncSearchMarquee();
   $("search-scope").addEventListener("change", function (e) {
     state.searchScope = e.target.value;
     save("searchScope", state.searchScope);

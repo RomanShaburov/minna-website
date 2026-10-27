@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Minna no Nihongo — слова</title>
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#120f33">
@@ -21,7 +21,10 @@
     <div class="top-row">
       <h1 class="logo">みんなの日本語 <span>уроки 1–25</span></h1>
       <div class="search-box">
-        <input type="search" id="search-input" placeholder="Поиск: слово, чтение или перевод" autocomplete="off" aria-label="Поиск слов">
+        <span class="search-field">
+          <input type="search" id="search-input" placeholder="Поиск: слово, чтение или перевод" autocomplete="off" aria-label="Поиск слов">
+          <span class="search-marquee" id="search-marquee" aria-hidden="true"></span>
+        </span>
         <div class="suggest" id="suggest" role="listbox" hidden></div>
         <select id="search-scope" aria-label="Где искать">
           <option value="all">Все уроки</option>
