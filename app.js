@@ -688,6 +688,7 @@
     showTrSection("setup");
     renderTrSetup();
     window.scrollTo(0, 0);
+    if (avail.length) window.MinnaAnki.preload();  // sql.js для колоды Anki — в фоне, пока выбираются уроки
   }
 
   function showTrSection(name) {

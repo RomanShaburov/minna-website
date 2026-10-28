@@ -256,5 +256,8 @@ window.MinnaAnki = (function () {
     setTimeout(function () { URL.revokeObjectURL(url); }, 10000);
   }
 
-  return { build: build, download: download };
+  // Загрузить sql.js заранее (при открытии тренажёра), чтобы по кнопке колода собиралась сразу
+  function preload() { loadSql().catch(function () {}); }
+
+  return { build: build, download: download, preload: preload };
 })();
