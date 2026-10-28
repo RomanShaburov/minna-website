@@ -718,6 +718,8 @@
     $("tr-empty").hidden = any;
     document.querySelector('input[name="tr-mode"][value="' + tset.mode + '"]').checked = true;
     document.querySelector('input[name="tr-dir"][value="' + tset.dir + '"]').checked = true;
+    $("anki-subdecks").checked = !!tset.ankiSubdecks;
+    $("anki-reverse").checked = !!tset.ankiReverse;
     $("tr-dir-group").classList.toggle("is-off", tset.mode !== "cards");
     updateTrStart();
   }
@@ -726,6 +728,8 @@
     var cnt = selectedTrWords().length;
     $("tr-start").disabled = !cnt;
     $("tr-start").textContent = cnt ? "Начать · слов: " + cnt : "Выберите уроки с отмеченными словами";
+    $("anki-export").disabled = !cnt || ankiBusy;
+    $("anki-export").textContent = "Скачать колоду" + (cnt ? " · слов: " + cnt : "");
   }
 
   function shuffle(list) {
@@ -873,6 +877,27 @@
     $("tr-dir-group").classList.toggle("is-off", tset.mode !== "cards");
   });
   $("tr-start").addEventListener("click", function () { startTraining(selectedTrWords()); });
+
+  // Колода Anki из тех же выбранных уроков (anki.js)
+  var ankiBusy = false;
+  $("anki-subdecks").addEventListener("change", function (e) { tset.ankiSubdecks = e.target.checked; saveTrainer(); });
+  $("anki-reverse").addEventListener("change", function (e) { tset.ankiReverse = e.target.checked; saveTrainer(); });
+  $("anki-export").addEventListener("click", function () {
+    var items = selectedTrWords();
+    if (!items.length || ankiBusy) return;
+    ankiBusy = true;
+    updateTrStart();
+    $("anki-status").textContent = "Собираю колоду…";
+    window.MinnaAnki.build(items, { subdecks: !!tset.ankiSubdecks, reverse: !!tset.ankiReverse })
+      .then(function (blob) {
+        window.MinnaAnki.download(blob, "minna-no-nihongo.apkg");
+        $("anki-status").textContent = "Готово: файл minna-no-nihongo.apkg";
+      })
+      .catch(function (err) {
+        $("anki-status").textContent = "Не получилось: " + (err && err.message || err) + ". Нужен интернет при первом экспорте.";
+      })
+      .then(function () { ankiBusy = false; updateTrStart(); });
+  });
   $("tr-exit").addEventListener("click", function () { showTrSection("setup"); renderTrSetup(); });
   $("tr-back-setup").addEventListener("click", function () { showTrSection("setup"); renderTrSetup(); });
   $("tr-again").addEventListener("click", function () { startTraining(selectedTrWords()); });

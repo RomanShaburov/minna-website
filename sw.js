@@ -2,12 +2,13 @@
 // Файлы всегда отдаются из сохранённых — приложение открывается сразу при любой сети.
 // Новая версия скачивается в фоне и включается кнопкой «Обновить» на плашке.
 // После любой правки файлов поменяйте номер в CACHE — иначе телефоны не узнают об обновлении.
-var CACHE = "minna-v4";
+var CACHE = "minna-v5";
 var FILES = [
   "./",
   "index.html",
   "style.css",
   "app.js",
+  "anki.js",
   "manifest.json",
   "icons/icon-192.png",
   "icons/icon-512.png",
@@ -68,6 +69,13 @@ self.addEventListener("fetch", function (e) {
       return c.match(req, { ignoreSearch: true }).then(function (hit) {
         if (hit) return hit;
         if (req.mode === "navigate") return c.match("index.html");
+        // sql.js для колоды Anki (~700 КБ) не входит в FILES: сохраняем при первом экспорте, дальше — без сети
+        if (new URL(req.url).pathname.indexOf("/vendor/") >= 0) {
+          return fetch(req).then(function (res) {
+            if (res.ok) c.put(req, res.clone());
+            return res;
+          });
+        }
         return fetch(req);
       });
     }).then(function (res) {

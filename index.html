@@ -93,6 +93,16 @@
         </div>
         <button class="answer-btn tr-start" id="tr-start">Начать</button>
         <p class="tr-empty" id="tr-empty" hidden>Отмеченных слов пока нет — отметьте их в уроках кликом по номеру или слову.</p>
+        <div class="tr-anki">
+          <div class="tr-label">Колода Anki</div>
+          <p class="tr-sub">Отмеченные слова из выбранных уроков — файлом .apkg: откройте его, и колода появится в Anki или AnkiDroid. На карточке — слово, на обороте — чтение и перевод. Повторный экспорт добавит новые слова и не задвоит старые.</p>
+          <label><input type="checkbox" id="anki-subdecks"> Отдельная подколода на каждый урок</label>
+          <label><input type="checkbox" id="anki-reverse"> Ещё и обратные карточки (перевод → слово)</label>
+          <div class="tr-row">
+            <button class="nav-btn" id="anki-export">Скачать колоду</button>
+            <span class="anki-status" id="anki-status"></span>
+          </div>
+        </div>
       </div>
 
       <div id="tr-play" hidden>
@@ -241,6 +251,7 @@
   <script src="data/lesson24.js"></script>
   <script src="data/lesson25.js"></script>
 
+  <script src="anki.js"></script>
   <script src="app.js"></script>
   <script>
     // Офлайн-режим и установка на телефон (нужен https или localhost)
