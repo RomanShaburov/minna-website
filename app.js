@@ -491,7 +491,7 @@
     syncTrainerMode();
   }
 
-  // Режим тренажёра: на телефоне прячем заголовок урока и сворачиваем список уроков (style.css)
+  // Режим тренажёра: на телефоне прячем заголовок урока; список уроков при смене вида сворачиваем (style.css)
   function syncTrainerMode() {
     document.body.classList.toggle("trainer-on", trainerOn);
     setNavOpen(false);

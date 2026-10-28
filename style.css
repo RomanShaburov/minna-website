@@ -231,7 +231,7 @@ body {
 }
 .lesson-btn:hover { border-color: var(--accent); }
 
-/* Кнопка «Уроки ▾» — видна только в тренажёре на телефоне (медиазапрос ниже) */
+/* Кнопка «Уроки ▾» — видна только на телефоне (медиазапрос ниже) */
 .nav-toggle {
   display: none;
   align-items: center;
@@ -724,11 +724,11 @@ td.col-note { color: var(--muted); font-size: 14px; }
   .search-box { flex-basis: 100%; min-width: 0; }
   .search-field input { width: 0; }
   .search-box select { flex: 0 1 auto; min-width: 0; max-width: 45%; }
-  /* Тренажёр на телефоне: без заголовка урока, список уроков свёрнут под кнопку «Уроки ▾» */
+  /* На телефоне список уроков свёрнут под кнопку «Уроки ▾»; в тренажёре ещё и без заголовка урока */
   .trainer-on .lesson-head { display: none; }
-  .trainer-on .nav-toggle { display: inline-flex; }
-  .trainer-on .lessons { display: none; }
-  .trainer-on .header.nav-open .lessons { display: flex; margin-top: 8px; }
+  .nav-toggle { display: inline-flex; }
+  .lessons { display: none; }
+  .header.nav-open .lessons { display: flex; margin-top: 8px; }
   /* Вкладки урока на узком телефоне переносятся, а не вылезают за край */
   .tabs { flex-wrap: wrap; }
   .tab { padding: 6px 10px; }
