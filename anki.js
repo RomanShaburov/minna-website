@@ -180,6 +180,13 @@ window.MinnaAnki = (function () {
 
   // items: [{ w: { kanji, reading, translation, note }, lesson }] — в нужном порядке (новые карточки идут так же)
   // opts: { subdecks: bool, reverse: bool }
+  // В Anki не нужна пометка «* в уроке не используется» (слово из справочной таблицы): убираем её, остальное оставляем
+  function ankiNote(note) {
+    return String(note || "").split(";").map(function (p) { return p.trim(); })
+      .filter(function (p) { return p && p.indexOf("* в уроке не используется") !== 0; })
+      .join("; ");
+  }
+
   function build(items, opts) {
     var nowMs = Date.now(), now = Math.floor(nowMs / 1000);
     return loadSql().then(function (SQL) {
@@ -189,7 +196,7 @@ window.MinnaAnki = (function () {
         return {
           guid: "mnn" + hash53("minna|" + it.lesson + "|" + (w.kanji || "") + "|" + w.reading).toString(36),
           lesson: it.lesson,
-          fields: [esc(word), w.kanji ? esc(w.reading) : "", esc(w.translation), esc(w.note), String(it.lesson), opts.reverse ? "1" : ""],
+          fields: [esc(word), w.kanji ? esc(w.reading) : "", esc(w.translation), esc(ankiNote(w.note)), String(it.lesson), opts.reverse ? "1" : ""],
           sort: word
         };
       });
